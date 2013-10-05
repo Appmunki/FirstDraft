@@ -3,6 +3,7 @@ import urllib
 import time
 import hashlib
 import os
+import redis
 #import firstdraft
 app = Flask(__name__)
 
