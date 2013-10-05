@@ -18,7 +18,8 @@
 				filepicker.pick(function(InkBlob){
 					console.log(InkBlob);
 					post(InkBlob, function(data){
-						console.log(data);
+						//console.log(data);
+						window.location.assign(data);
 					});
 				});
 			}

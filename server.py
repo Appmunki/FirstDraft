@@ -10,21 +10,26 @@ app = Flask(__name__)
 def index():
     return redirect(url_for('static', filename='page.html'))
 
-
 @app.route('/api', methods = ['POST'])
-def hello():
+def api():
     url = (request.form['url'])
-    return download_image(url, str(time.time())+".png")
+    return "static/"+download_image(url, str(time.time())+".png")
+
+@app.route('/static/content/<variable>/')
+def hashData(variable):
+    print str(variable)
+    return "<html><body><img src='img.png' width='18%' height='18%'></body></html>"
 
 
 def download_image(url,name):
     image=urllib.URLopener()
-    tempName = "img/"+name;
-    image.retrieve(url, tempName);
-    imgHash = md5Checksum(tempName);
-    print os.getcwd()+"/"+tempName;
-    os.rename(os.getcwd()+"/"+tempName, os.getcwd()+"/"+imgHash+"/img/"+name);
-
+    tempName = "img/"+name
+    image.retrieve(url, tempName)
+    imgHash = md5Checksum(tempName)
+    if not os.path.exists("static/content/"+imgHash+"/img") :
+        os.makedirs("static/content/"+imgHash+"/img")
+    os.rename(tempName, "static/content/"+imgHash+"/img.png")
+    return "../content/"+imgHash
     #firstdraft.processImage(name);
 
 
@@ -41,4 +46,4 @@ def md5Checksum(filePath):
 
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(debug=True, port=80,host="0.0.0.0")
