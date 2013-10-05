@@ -48,15 +48,15 @@ class VisualNode(object):
 
 VisualToHTMLMap = {
     "CONTAINER":"div",
-    "TEXT":"h5",
+    "TEXT":"p",
     "IMAGE":"img",
-    "VIDEO":"",
-    "AUDIO":,
-    "INPUT":,
-    "PASSWORD":,
-    "HEADER":,
-    "BUTTON":,
-    "TEXTINPUT":,
+    "VIDEO":"video",
+    "AUDIO":"audio",
+    "INPUT":"input",
+    "PASSWORD":"input",
+    "HEADER":"h5",
+    "BUTTON":"button",
+    "TEXTINPUT":"textarea",
 }
 
 class HTMLNode(object):
@@ -130,4 +130,3 @@ class HTMLInputNode(HTMLNode):
     def strTag(self):
         src = "http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga"
         return "<audio src='" + src  + "' controls>%s</audio>"
-    
