@@ -128,7 +128,7 @@ def print_range(a, b):
 # gets the default row for an image as HTML
 def get_html_for(a):
     if a:
-        return "<img src = \"/static/content/"+a+"/img.png\" width=\"300px\"><div><a href=/static/content/"+a+"/template.html>[page]</a><a href =/static/content/"+a+"/img.png>[image]</a></div><br />"
+        return "<img src = \"/static/content/"+a+"/img.png\" width=\"300px\"><div><a href=/static/content/"+a+"/basic.html>[basic]</a><a href=/static/content/"+a+"/css.html>[css]</a><a href=/static/content/"+a+"/bootstrap.html>[bootstrap]</a><a href =/static/content/"+a+"/img.png>[image]</a></div><br />"
     else:
 	print str(a)+"  was the key to shit"
     return ""
