@@ -47,13 +47,20 @@ class VisualNode(object):
         self.boundingBox = bbox
         self.children = []
 
-    def isRoot():
+    def isRoot(self):
         return self.parent == None
 
-    def addChild(vtype,bbox):
+    def addNewChild(self, newChild):
+        newChild.parent = self
+        heapq.heappush(self.children, newChild)
+        self.children = sorted(self.children)
+        return newChild
+
+    def addChild(self, vtype, bbox):
         child = VisualNode(self,vtype,bbox)
         heapq.heappush(self.children, child)
         self.children = sorted(self.children)
+        return child
 
     def __lt__(self,other):
         return self.boundingBox < other.boundingBox
