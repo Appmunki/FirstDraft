@@ -7,16 +7,28 @@ class Enum(set):
             return name
         raise AttributeError
 
-VisualType = Enum(["CONTAINER",
+VisualType = Enum(["DIV",
                    "TEXT",
+                   "HEADER1",
+                   "HEADER2",
+                   "HEADER3",
+                   "HEADER4",
+                   "HEADER5",
+                   "HEADER6",
+                   "HEADER",
                    "IMAGE",
                    "VIDEO",
                    "AUDIO",
-                   "INPUT",
-                   "PASSWORD",
-                   "HEADER",
+                   "FORM",
+                   "LABEL",
+                   "INPUTTEXT",
+                   "INPUTPASSWORD",
+                   "INPUTCHECKBOX",
+                   "INPUTRADIOBUTTON",
                    "BUTTON",
-                   "TEXTINPUT"])
+                   "BUTTONSUBMIT",
+                   "SELECT",
+                   "TEXTAREA"])
 
 class RelativeBoundingBox(object):
     def __init__(self,offsetX,offsetY,width,height):       
@@ -46,6 +58,7 @@ class VisualNode(object):
     def __lt__(self,other):
         return self.boundingBox < other.boundingBox
 
+<<<<<<< HEAD
 VisualToHTMLMap = {
     "CONTAINER":"div",
     "TEXT":"p",
@@ -57,9 +70,34 @@ VisualToHTMLMap = {
     "HEADER":"h5",
     "BUTTON":"button",
     "TEXTINPUT":"textarea",
+=======
+VisualToHTMLMap =  { 
+    VisualType.DIV: HTMLDivNode,
+    VisualType.TEXT: HTMLTextNode,
+    VisualType.HEADER1: HTMLH1Node,
+    VisualType.HEADER2: HTMLH2Node,
+    VisualType.HEADER3: HTMLH3Node,
+    VisualType.HEADER4: HTMLH4Node,
+    VisualType.HEADER5: HTMLH5Node,
+    VisualType.HEADER6: HTMLH6Node,
+    VisualType.HEADER: HTMLHeaderNode,
+    VisualType.IMAGE: HTMLImageNode,
+    VisualType.VIDEO: HTMLVideoNode,
+    VisualType.AUDIO: HTMLAudioNode,
+    VisualType.FORM: HTMLFormNode,
+    VisualType.LABEL: HTMLLabelNode,
+    VisualType.INPUTTEXT: HTMLInputTextNode,
+    VisualType.INPUTPASSWORD: HTMLInputPasswordNode,
+    VisualType.INPUTCHECKBOX: HTMLInputCheckboxNode,
+    VisualType.INPUTRADIOBUTTON: HTMLInputRadioButtonNode,
+    VisualType.BUTTON: HTMLButtonNode,
+    VisualType.BUTTONSUBMIT: HTMLButtonSubmitNode,
+    VisualType.SELECT: HTMLSelectNode,
+    VisualType.TEXTAREA: HTMLTextAreaNode
+>>>>>>> 956e22ddea6b9a1f017fd59f2c1b1d63284440b2
 }
 
-class HTMLNode(object):
+class HdTMLNode(object):
     def __init__(self,visualNode):
         self.children = []
         
@@ -125,8 +163,48 @@ class HTMLAudioNode(HTMLNode):
     def strTag(self):
         src = "http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga"
         return "<audio src='" + src  + "' controls>%s</audio>"
-    
-class HTMLInputNode(HTMLNode):
+
+class HTMLFormNode(HTMLNode):
     def strTag(self):
+<<<<<<< HEAD
         src = "http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga"
         return "<audio src='" + src  + "' controls>%s</audio>"
+=======
+        return "<form>%s</form>"
+
+class HTMLLabelNode(HTMLNode):
+    def strTag(self):
+        return "<label>Lorem</label>"
+
+class HTMLInputTextNode(HTMLNode):
+    def strTag(self):
+        return "<input type='text'>"
+
+class HTMLInputPasswordNode(HTMLNode):
+    def strTag(self):
+        return "<input type='password'>"
+
+class HTMLInputCheckboxNode(HTMLNode):
+    def strTag(self):
+        return "<input type='checkbox'>"        
+
+class HTMLInputRadioButtonNode(HTMLNode):
+    def strTag(self):
+        return "<input type='radiobutton'>"
+
+class HTMLButtonNode(HTMLNode):
+    def strTag(self):
+        return "<button type='button'>Click</button>"
+
+class HTMLButtonSubmitNode(HTMLNode):
+    def strTag(self):
+        return "<button type='submit' value='submit'>Submit</button>"
+
+class HTMLSelectNode(HTMLNode):
+    def strTag(self):
+        return "<select><option value='foo'>foo</option><option value='bar'>bar</option><option value='choo'>choo</option></select>"
+        
+class HTMLTextAreaNode(HTMLNode):
+    def strTag(self):
+        return "<textarea></textarea>"
+>>>>>>> 956e22ddea6b9a1f017fd59f2c1b1d63284440b2
