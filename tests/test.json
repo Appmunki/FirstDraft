@@ -1,0 +1,47 @@
+{
+	"type":"DIV",
+	"bbox":{
+		"offsetY":"0",
+		"width":"500",
+		"height":"500",
+		"offsetX":"0"
+	},
+	"parent":"None",
+	"children":[
+			{
+				"type":"TEXT",
+				"bbox":{
+					"offsetY":"1",
+					"width":"10",
+					"height":"3",
+					"offsetX":"2"
+				},
+				"parent":"None",
+				"children":[]
+			},
+			{
+				"type":"DIV",
+				"bbox":{
+					"offsetY":"50",
+					"width":"20",
+					"height":"40",
+					"offsetX":"3"
+				},
+				"parent":"None",
+					"children":[
+							{
+							"type":"TEXT",
+							"bbox":{
+								"offsetY":"10",
+								"width":"200",
+								"height":"3",
+								"offsetX":"30"
+							},
+							"parent":"None",
+							"children":[]
+						}
+				]
+			}
+		]
+}
+
