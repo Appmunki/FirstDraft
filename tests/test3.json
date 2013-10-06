@@ -62,19 +62,7 @@
 				"height":"40"
 			},
 			"parent":"None",
-			"children":[
-				{
-					"type":"TEXT",
-					"bbox":{
-						"width":"40",
-						"offsetX":"10",
-						"offsetY":"0",
-						"height":"30"
-					},
-					"parent":"None",
-					"children":[]
-				}
-			]
+			"children":[]
 		}
 	]
 }
