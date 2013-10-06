@@ -4,6 +4,9 @@ import time
 import hashlib
 import os
 import redis
+import sys
+import FirstDraft
+sys.appendPath.path(".")
 #import firstdraft
 
 # flash stuff
@@ -69,6 +72,7 @@ def download_image(url,name):
     if not os.path.exists(hashPath) :
         os.makedirs(hashPath)
     os.rename(tempName, hashPath+"/img.png")
+    FirstDraft(hashPath+"/img.png", hashPath+"/basic.html", hashPath+"/css.html", hashPath+"/bootstrap.html")
 
     #return the path of the image
     return "../content/"+imgHash
