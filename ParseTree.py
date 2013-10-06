@@ -28,7 +28,8 @@ VisualType = Enum(["DIV",
                    "BUTTON",
                    "BUTTONSUBMIT",
                    "SELECT",
-                   "TEXTAREA"])
+                   "TEXTAREA",
+                   "IMAGEDIV"])
 
 class RelativeBoundingBox(object):
     def __init__(self,offsetX,offsetY,width,height):       
@@ -188,6 +189,12 @@ class HTMLSelectNode(HTMLNode):
 class HTMLTextAreaNode(HTMLNode):
     def strTag(self):
         return "<textarea %s></textarea>"
+
+class HTMLImageDivNode(HTMLNode):
+    def strTag(self):
+        src = "http://lorempixel.com/%s/%s/city" % (self.visualNode.boundingBox.width, self.visualNode.boundingBox.height)
+        return "<div style='background-image: url(\"" + src  + "\")' %s>%s</img>"
+
 
 class HTMLTree(object):
     def __init__(self,rootVisualNode):
