@@ -1,6 +1,10 @@
 import heapq
 import cgi
 import HTMLParser
+import matplotlib.pyplot as plt 
+import tesseract
+import cv2
+
 class Enum(set):
     def __getattr__(self, name):
         if name in self:
@@ -34,7 +38,7 @@ VisualType = Enum(["DIV",
                    "LISTELEMENT"])
 
 ContourNodeToVisualType = {
-    "D":"DIV",
+    "C":"DIV",
     "T":"TEXT",
     "1":"HEADER1",
     "2":"HEADER2",
@@ -50,13 +54,13 @@ ContourNodeToVisualType = {
     "L":"LABEL",
     "U":"INPUTTEXT",
     "P":"INPUTPASSWORD",
-    "C":"INPUTCHECKBOX",
+    "O":"INPUTCHECKBOX",
     "R":"INPUTRADIOBUTTON",
     "B":"BUTTON",
     "S":"BUTTONSUBMIT",
     "E":"SELECT",
     "X":"TEXTAREA",
-    "B":"IMAGEDIV",
+    "M":"IMAGEDIV",
     "K":"LIST",
     "N":"LISTELEMENT"
 }
@@ -99,7 +103,25 @@ class VisualNode(object):
         return self.boundingBox < other.boundingBox
 
 def ContourToVisualTree(contourRoot):
-    pass
+		image_orig = cv2.cvtColor(contourRoot.img, cv2.COLOR_BGR2GRAY)
+		#image = cv2.cv.LoadImage("../testimages/testimage4-2.png", cv2.cv.CV_LOAD_IMAGE_GRAYSCALE)
+		api = tesseract.TessBaseAPI()
+		api.Init(".","eng",tesseract.OEM_DEFAULT)
+		api.SetPageSegMode(tesseract.PSM_SINGLE_LINE)
+		tesseract.SetCvImage(image_orig, api)
+		extracted = api.GetUTF8Text()
+		guess_char = extracted[0].upper()
+		if guess_char not in ContourNodeToVisualType:
+				guess_char = 'C'
+		visualType = ContourNodeToVisualType[guess_char]
+		bbox = RelativeBoundingBox(*contourRoot.bbox)
+		thisnode = VisualNode(None, visualType, bbox)
+		for cnode in contourRoot.children:
+			thisnode.addChild(ContourToVisualTree(cnode))
+		return thisnode
+
+
+
 
 class HTMLNode(object):
     def __init__(self,visualNode):

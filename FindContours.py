@@ -117,7 +117,7 @@ class ContourFinder:
 
 class ContourNode:
     def __init__(self, contour, img):
-        x,y,w,h = cv2.boundingRect(countour)
+        x,y,w,h = cv2.boundingRect(contour)
         self.bbox = (x,y,w,h)
         self.img = img
         self.children = []
