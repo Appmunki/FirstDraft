@@ -70,6 +70,9 @@ class VisualNode(object):
     def __lt__(self,other):
         return self.boundingBox < other.boundingBox
 
+def ContourToVisualTree(contourRoot):
+    pass
+
 class HTMLNode(object):
     def __init__(self,visualNode):
         self.boundingBox = visualNode.boundingBox
