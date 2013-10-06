@@ -92,9 +92,11 @@ class HTMLNode(object):
     def __str__(self):
         strArgs = []
         strArgs.append(self.tagAttributes)
+        selfStr = self.strTag()
+        strNumArgs = selfStr.count("%")
         if len(self.children):
             strArgs.append(self.strChildren())
-        if len(strArgs)==2:
+        if len(strArgs)==selfStr:
           return self.strTag() % tuple(strArgs)
         else:
           return self.strTag()
