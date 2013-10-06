@@ -2,7 +2,7 @@ import heapq
 import cgi
 import HTMLParser
 import matplotlib.pyplot as plt 
-import tesseract
+#import tesseract
 import cv2
 
 class Enum(set):
@@ -194,8 +194,8 @@ class HTMLHeaderNode(HTMLNode):
 
 class HTMLImageNode(HTMLNode):
     def strTag(self):
-        src = "http://lorempixel.com/%s/%s/cats" % (self.visualNode.boundingBox.width, self.visualNode.boundingBox.height)
-        return "<img src='" + src  + "' %s>%s</img>"
+        src = "http://lorempixel.com/%s/%s/cats" % (self.boundingBox.width, self.boundingBox.height)
+        return "<img src='" + src  + "' %s></img>"
 
 class HTMLVideoNode(HTMLNode):
     def strTag(self):
@@ -249,8 +249,8 @@ class HTMLTextAreaNode(HTMLNode):
 
 class HTMLImageDivNode(HTMLNode):
     def strTag(self):
-        src = "http://lorempixel.com/%s/%s/city" % (self.visualNode.boundingBox.width, self.visualNode.boundingBox.height)
-        return "<div style='background-image: url(\"" + src  + "\")' %s>%s</img>"
+        src = "http://lorempixel.com/%s/%s/city" % (self.boundingBox.width, self.boundingBox.height)
+        return "<div style='background-image: url(\"" + src  + "\")' %s>%s</div>"
 
 class HTMLListNode(HTMLNode):
     def strTag(self):

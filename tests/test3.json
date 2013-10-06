@@ -9,30 +9,19 @@
 	"parent":"None",
 	"children":[
 		{
-			"type":"HEADER",
+			"type":"IMAGE",
 			"bbox":{
 				"width":"1024",
 				"offsetX":"0",
 				"offsetY":"0",
-				"height":"50"
+				"height":"30"
 			},
 			"parent":"None",
 			"children":[
-				{
-					"type":"TEXT",
-					"bbox":{
-						"width":"50",
-						"offsetX":"10",
-						"offsetY":"10",
-						"height":"30"
-					},
-					"parent":"None",
-					"children":[]
-				}
 			]
 		},
 		{
-			"type":"HEADER1",
+			"type":"IMAGEDIV",
 			"bbox":{
 				"width":"400",
 				"offsetX":"300",
@@ -40,7 +29,18 @@
 				"height":"70"
 			},
 			"parent":"None",
-			"children":[]
+			"children":[
+				{
+					"type":"HEADER1",
+					"bbox":{
+						"width":"400",
+						"offsetX":"10",
+						"offsetY":"10",
+						"height":"30"
+					},
+					"parent":"None",
+					"children":[]
+				}]
 		},
 		{
 			"type":"INPUTTEXT",
