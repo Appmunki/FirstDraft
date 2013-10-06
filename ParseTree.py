@@ -1,6 +1,6 @@
 import heapq
 import cgi
-
+import HTMLParser
 class Enum(set):
     def __getattr__(self, name):
         if name in self:
@@ -69,7 +69,9 @@ class VisualNode(object):
 
 class HTMLNode(object):
     def __init__(self,visualNode):
+        self.boundingBox = visualNode.boundingBox
         self.children = []
+        self.tagAttributes = ""
         for child in visualNode.children:
             if child.visualType not in VisualToHTMLMap:
                 raise Exception("HTML Parse Error: No mapping from visual type %s to html node" % child.visualType)
@@ -87,14 +89,18 @@ class HTMLNode(object):
         return "%s"
 
     def __str__(self):
+        strArgs = []
+        strArgs.append(self.tagAttributes)
         if len(self.children):
-          return self.strTag() % self.strChildren()
+            strArgs.append(self.strChildren())
+        if len(strArgs)==2:
+          return self.strTag() % tuple(strArgs)
         else:
           return self.strTag()
 
 class HTMLDivNode(HTMLNode):
     def strTag(self):
-        return "<div>%s</div>"
+        return "<div %s>%s</div>"
 
 class HTMLTextNode(HTMLNode):
     def strTag(self):
@@ -102,86 +108,86 @@ class HTMLTextNode(HTMLNode):
 
 class HTMLH1Node(HTMLNode):
     def strTag(self):
-        return "<h1>Lorem Ipsum</h1>"
+        return "<h1 %s>Lorem Ipsum</h1>"
 
 class HTMLH2Node(HTMLNode):
     def strTag(self):
-        return "<h2>Lorem Ipsum</h2>"
+        return "<h2 %s>Lorem Ipsum</h2>"
 
 class HTMLH3Node(HTMLNode):
     def strTag(self):
-        return "<h3>Lorem Ipsum</h3>"
+        return "<h3 %s>Lorem Ipsum</h3>"
 
 class HTMLH4Node(HTMLNode):
     def strTag(self):
-        return "<h4>Lorem Ipsum</h4>"
+        return "<h4 %s>Lorem Ipsum</h4>"
 
 class HTMLH5Node(HTMLNode):
     def strTag(self):
-        return "<h5>Lorem Ipsum</h5>"
+        return "<h5 %s>Lorem Ipsum</h5>"
 
 class HTMLH6Node(HTMLNode):
     def strTag(self):
-        return "<h6>Lorem Ipsum</h6>"
+        return "<h6 %s>Lorem Ipsum</h6>"
 
 class HTMLHeaderNode(HTMLNode):
     def strTag(self):
-        return "<header>%s</header>"
+        return "<header %s>%s</header>"
 
 class HTMLImageNode(HTMLNode):
     def strTag(self):
         src = "http://lorempixel.com/%s/%s/cats" % (self.visualNode.boundingBox.width, self.visualNode.boundingBox.height)
-        return "<img src='" + src  + "'>%s</img>"
+        return "<img src='" + src  + "' %s>%s</img>"
 
 class HTMLVideoNode(HTMLNode):
     def strTag(self):
         src = "http://media.w3.org/2010/05/bunny/movie.ogv"
-        return "<video src='" + src  + "' controls>%s</video>"
+        return "<video src='" + src  + "' controls %s>%s</video>"
 
 class HTMLAudioNode(HTMLNode):
     def strTag(self):
         src = "http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga"
-        return "<audio src='" + src  + "' controls>%s</audio>"
+        return "<audio src='" + src  + "' controls %s>%s</audio>"
 
 class HTMLFormNode(HTMLNode):
     def strTag(self):
-       return "<form>%s</form>"
+       return "<form %s>%s</form>"
 
 class HTMLLabelNode(HTMLNode):
     def strTag(self):
-        return "<label>Lorem</label>"
+        return "<label %s>Lorem</label>"
 
 class HTMLInputTextNode(HTMLNode):
     def strTag(self):
-        return "<input type='text'>"
+        return "<input type='text' %s>"
 
 class HTMLInputPasswordNode(HTMLNode):
     def strTag(self):
-        return "<input type='password'>"
+        return "<input type='password' %s>"
 
 class HTMLInputCheckboxNode(HTMLNode):
     def strTag(self):
-        return "<input type='checkbox'>"        
+        return "<input type='checkbox' %s>"        
 
 class HTMLInputRadioButtonNode(HTMLNode):
     def strTag(self):
-        return "<input type='radiobutton'>"
+        return "<input type='radiobutton' %s>"
 
 class HTMLButtonNode(HTMLNode):
     def strTag(self):
-        return "<button type='button'>Click</button>"
+        return "<button type='button' %s>Click</button>"
 
 class HTMLButtonSubmitNode(HTMLNode):
     def strTag(self):
-        return "<button type='submit' value='submit'>Submit</button>"
+        return "<button type='submit' value='submit' %s>Submit</button>"
 
 class HTMLSelectNode(HTMLNode):
     def strTag(self):
-        return "<select><option value='foo'>foo</option><option value='bar'>bar</option><option value='choo'>choo</option></select>"
+        return "<select %s><option value='foo'>foo</option><option value='bar'>bar</option><option value='choo'>choo</option></select>"
         
 class HTMLTextAreaNode(HTMLNode):
     def strTag(self):
-        return "<textarea></textarea>"
+        return "<textarea %s></textarea>"
 
 class HTMLTree(object):
     def __init__(self,rootVisualNode):
@@ -189,7 +195,22 @@ class HTMLTree(object):
             raise Exception("HTML Parse Error: No mapping from visual type %s to html node" % rootVisualNode.visualType)
         rootHtmlClass = VisualToHTMLMap[rootVisualNode.visualType]
         self.rootBodyNode = rootHtmlClass(rootVisualNode)
-        print self.rootBodyNode
+
+    def __str__(self):
+        return str(self.rootBodyNode)
+
+class HTMLGenerator(object):
+    def __init__(self):
+        pass
+    def Generate(self,htmlTree):
+        pass
+
+def HTMLGenerate(htmlTree, htmlGenerator):
+    html = htmlGenerator.Generate(htmlTree)
+    htmlParser = HTMLParser.HTMLParser()
+    htmlParser.feed(html)
+    htmlParser.close()
+    return html
 
 VisualToHTMLMap =  { 
     VisualType.DIV: HTMLDivNode,
