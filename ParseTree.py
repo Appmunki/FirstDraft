@@ -33,6 +33,34 @@ VisualType = Enum(["DIV",
                    "LIST",
                    "LISTELEMENT"])
 
+ContourNodeToVisualType = {
+    "D":"DIV",
+    "T":"TEXT",
+    "1":"HEADER1",
+    "2":"HEADER2",
+    "3":"HEADER3",
+    "4":"HEADER4",
+    "5":"HEADER5",
+    "6":"HEADER6",
+    "H":"HEADER",
+    "I":"IMAGE",
+    "V":"VIDEO",
+    "A":"AUDIO",
+    "F":"FORM",
+    "L":"LABEL",
+    "U":"INPUTTEXT",
+    "P":"INPUTPASSWORD",
+    "C":"INPUTCHECKBOX",
+    "R":"INPUTRADIOBUTTON",
+    "B":"BUTTON",
+    "S":"BUTTONSUBMIT",
+    "E":"SELECT",
+    "X":"TEXTAREA",
+    "B":"IMAGEDIV",
+    "K":"LIST",
+    "N":"LISTELEMENT"
+}
+
 class RelativeBoundingBox(object):
     def __init__(self,offsetX,offsetY,width,height):       
         self.offsetY = offsetY
