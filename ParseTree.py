@@ -43,6 +43,8 @@ class RelativeBoundingBox(object):
 class VisualNode(object):
     def __init__(self, parent, vtype, bbox):
         self.parent = parent
+        if vtype not in VisualType:
+            raise Exception("Visual Parse Error: No such visual type %s" % vtype)
         self.visualType = vtype
         self.boundingBox = bbox
         self.children = []
@@ -65,12 +67,40 @@ class VisualNode(object):
     def __lt__(self,other):
         return self.boundingBox < other.boundingBox
 
-
+VisualToHTMLMap =  { 
+    VisualType.DIV: HTMLDivNode,
+    VisualType.TEXT: HTMLTextNode,
+    VisualType.HEADER1: HTMLH1Node,
+    VisualType.HEADER2: HTMLH2Node,
+    VisualType.HEADER3: HTMLH3Node,
+    VisualType.HEADER4: HTMLH4Node,
+    VisualType.HEADER5: HTMLH5Node,
+    VisualType.HEADER6: HTMLH6Node,
+    VisualType.HEADER: HTMLHeaderNode,
+    VisualType.IMAGE: HTMLImageNode,
+    VisualType.VIDEO: HTMLVideoNode,
+    VisualType.AUDIO: HTMLAudioNode,
+    VisualType.FORM: HTMLFormNode,
+    VisualType.LABEL: HTMLLabelNode,
+    VisualType.INPUTTEXT: HTMLInputTextNode,
+    VisualType.INPUTPASSWORD: HTMLInputPasswordNode,
+    VisualType.INPUTCHECKBOX: HTMLInputCheckboxNode,
+    VisualType.INPUTRADIOBUTTON: HTMLInputRadioButtonNode,
+    VisualType.BUTTON: HTMLButtonNode,
+    VisualType.BUTTONSUBMIT: HTMLButtonSubmitNode,
+    VisualType.SELECT: HTMLSelectNode,
+    VisualType.TEXTAREA: HTMLTextAreaNode
+}
 
 class HTMLNode(object):
     def __init__(self,visualNode):
         self.children = []
-        
+        for child in visualNode.children:
+            if child.vtype not in VisualToHTMLMap:
+                raise Exception("HTML Parse Error: No mapping from visual type %s to html node" % child.vtype)
+                htmlClass = VisualToHTMLMap[child.vtype]
+                self.children.append(htmlClass(rootVisualNode))
+
     
     def strChildren(self):
         strC = ""
@@ -174,27 +204,10 @@ class HTMLTextAreaNode(HTMLNode):
     def strTag(self):
         return "<textarea></textarea>"
 
-VisualToHTMLMap =  { 
-    VisualType.DIV: HTMLDivNode,
-    VisualType.TEXT: HTMLTextNode,
-    VisualType.HEADER1: HTMLH1Node,
-    VisualType.HEADER2: HTMLH2Node,
-    VisualType.HEADER3: HTMLH3Node,
-    VisualType.HEADER4: HTMLH4Node,
-    VisualType.HEADER5: HTMLH5Node,
-    VisualType.HEADER6: HTMLH6Node,
-    VisualType.HEADER: HTMLHeaderNode,
-    VisualType.IMAGE: HTMLImageNode,
-    VisualType.VIDEO: HTMLVideoNode,
-    VisualType.AUDIO: HTMLAudioNode,
-    VisualType.FORM: HTMLFormNode,
-    VisualType.LABEL: HTMLLabelNode,
-    VisualType.INPUTTEXT: HTMLInputTextNode,
-    VisualType.INPUTPASSWORD: HTMLInputPasswordNode,
-    VisualType.INPUTCHECKBOX: HTMLInputCheckboxNode,
-    VisualType.INPUTRADIOBUTTON: HTMLInputRadioButtonNode,
-    VisualType.BUTTON: HTMLButtonNode,
-    VisualType.BUTTONSUBMIT: HTMLButtonSubmitNode,
-    VisualType.SELECT: HTMLSelectNode,
-    VisualType.TEXTAREA: HTMLTextAreaNode
-}
+class HTMLTree(object):
+    def __init__(self,rootVisualNode):
+        if rootVisualNode.vtype not in VisualToHTMLMap:
+            raise Exception("HTML Parse Error: No mapping from visual type %s to html node" % rootVisualNode.vtype)
+        rootHtmlClass = VisualToHTMLMap[rootVisualNode.vtype]
+        self.rootBodyNode = rootHtmlClass(rootVisualNode)
+        print self.rootBodyNode
