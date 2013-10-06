@@ -6,6 +6,7 @@ import os
 import redis
 #import firstdraft
 app = Flask(__name__)
+r = redis.StrictRedis(host='localhost', port=6379, db=0)
 
 @app.route('/')
 def index():
@@ -27,9 +28,11 @@ def download_image(url,name):
     tempName = "img/"+name
     image.retrieve(url, tempName)
     imgHash = md5Checksum(tempName)
-    if not os.path.exists("static/content/"+imgHash+"/img") :
-        os.makedirs("static/content/"+imgHash+"/img")
-    os.rename(tempName, "static/content/"+imgHash+"/img.png")
+    DB_STORE(imgHash)
+    hashPath = "static/content/"+imgHash;
+    if not os.path.exists(hashPath) :
+        os.makedirs(hashPath)
+    os.rename(tempName, hashPath+"/img.png")
     return "../content/"+imgHash
     #firstdraft.processImage(name);
 
