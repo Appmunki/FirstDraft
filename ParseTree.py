@@ -96,7 +96,7 @@ class HTMLNode(object):
         strNumArgs = selfStr.count("%")
         if len(self.children):
             strArgs.append(self.strChildren())
-        if len(strArgs)==selfStr:
+        if len(strArgs)==strNumArgs:
           return self.strTag() % tuple(strArgs)
         else:
           return self.strTag()
