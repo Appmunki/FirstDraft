@@ -2,7 +2,7 @@ import sys
 sys.path.append("..")
 from ParseTree import *
 
-class CSSHTMLGenerator(HTMLGenerator):
+class BootstrapHTMLGenerator(HTMLGenerator):
     def __init__(self):
         self.cssRules = {}
         pass
@@ -11,8 +11,9 @@ class CSSHTMLGenerator(HTMLGenerator):
         self.generateCSSRules(htmlTree.rootBodyNode,"a")
         style = self.generateCSSStyle(self.cssRules)
         style = "<style type='text/css'>%s</style>" % style
+        bootstrap = "<link href='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css' rel='stylesheet'>" + "<script src='http://netdna.bootstrapcdn.com/bootstrap/3.0.0/js/bootstrap.min.js'></script>"
         body = "<body><div style='border: dashed; width: %dpx; height: %dpx'>%s</div></body>" % (htmlTree.rootBodyNode.boundingBox.width, htmlTree.rootBodyNode.boundingBox.height, str(htmlTree))
-        html = "<!DOCTYPE html><html lang='en'><head><title>A First Draft</title> %s </head>%s</html>" % (style,body)
+        html = "<!DOCTYPE html><html lang='en'><head><title>A First Draft</title> %s %s </head>%s</html>" % (bootstrap,style,body)
         return html
 
     def generateCSSRules(self,node,node_id):

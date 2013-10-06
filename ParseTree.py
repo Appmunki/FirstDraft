@@ -29,7 +29,9 @@ VisualType = Enum(["DIV",
                    "BUTTONSUBMIT",
                    "SELECT",
                    "TEXTAREA",
-                   "IMAGEDIV"])
+                   "IMAGEDIV",
+                   "LIST",
+                   "LISTELEMENT"])
 
 class RelativeBoundingBox(object):
     def __init__(self,offsetX,offsetY,width,height):       
@@ -97,9 +99,9 @@ class HTMLNode(object):
         if len(self.children):
             strArgs.append(self.strChildren())
         if len(strArgs)==strNumArgs:
-          return self.strTag() % tuple(strArgs)
+          return selfStr % tuple(strArgs)
         else:
-          return self.strTag()
+          return selfStr
 
 class HTMLDivNode(HTMLNode):
     def strTag(self):
@@ -197,6 +199,13 @@ class HTMLImageDivNode(HTMLNode):
         src = "http://lorempixel.com/%s/%s/city" % (self.visualNode.boundingBox.width, self.visualNode.boundingBox.height)
         return "<div style='background-image: url(\"" + src  + "\")' %s>%s</img>"
 
+class HTMLListNode(HTMLNode):
+    def strTag(self):
+        return "<ul %s>%s</ul>"
+
+class HTMLListElementNode(HTMLNode):
+    def strTag(self):
+        return "<li %s>Lorem Ipsum</li>"
 
 class HTMLTree(object):
     def __init__(self,rootVisualNode):
@@ -243,6 +252,9 @@ VisualToHTMLMap =  {
     VisualType.BUTTON: HTMLButtonNode,
     VisualType.BUTTONSUBMIT: HTMLButtonSubmitNode,
     VisualType.SELECT: HTMLSelectNode,
-    VisualType.TEXTAREA: HTMLTextAreaNode
+    VisualType.TEXTAREA: HTMLTextAreaNode,
+    VisualType.IMAGEDIV: HTMLImageDivNode,
+    VisualType.LIST: HTMLListNode,
+    VisualType.LISTELEMENT: HTMLListElementNode
 }
 
