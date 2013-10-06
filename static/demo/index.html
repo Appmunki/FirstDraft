@@ -5,10 +5,41 @@
 		</title>
 		<link href='http://fonts.googleapis.com/css?family=Courgette' rel='stylesheet' type='text/css'>
 		<link rel="stylesheet" href="css/layout.css" type="text/css" media="screen"/>
-		<script type="text/javascript" src="js/jquery.min.js"></script>
 		<script type="text/javascript" src="js/menu.js"></script>
+		<script type="text/javascript" src="http://api.filepicker.io/v1/filepicker.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script>
+			post = function(payload, callback){
+				jQuery.ajax({
+					url:'/api',
+					method:'POST',
+					data:payload,
+					success:function(data){
+						callback(data);
+					}
+				})
+			}
+
+			pickFile = function(){
+				filepicker.pick({
+							mimetypes:['image/*']
+						},
+						function(InkBlob){
+							console.log(InkBlob);
+							post(InkBlob, function(data){
+								//console.log(data);
+								window.location.assign("/list");
+							});
+						});
+			}
+
+			initFilePick = function(){
+				filepicker.setKey('A9AzHctuQmy0OQBBK3Jzgz');
+			}
+		</script>
+		
 	</head>
-	<body>
+	<body onload="initFilePick()">
 		<div class = "menu">
 			<div class = "toggleColor home">
 				<div class = "verticalCenter">
