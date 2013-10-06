@@ -73,8 +73,8 @@ class HTMLNode(object):
         for child in visualNode.children:
             if child.visualType not in VisualToHTMLMap:
                 raise Exception("HTML Parse Error: No mapping from visual type %s to html node" % child.visualType)
-                htmlClass = VisualToHTMLMap[child.visualType]
-                self.children.append(htmlClass(rootVisualNode))
+            htmlClass = VisualToHTMLMap[child.visualType]
+            self.children.append(htmlClass(child))
 
     
     def strChildren(self):
@@ -87,7 +87,10 @@ class HTMLNode(object):
         return "%s"
 
     def __str__(self):
-        return self.strTag() % self.strChildren()
+        if len(self.children):
+          return self.strTag() % self.strChildren()
+        else:
+          return self.strTag()
 
 class HTMLDivNode(HTMLNode):
     def strTag(self):
