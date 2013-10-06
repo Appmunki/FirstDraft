@@ -81,6 +81,7 @@ class HTMLNode(object):
         strC = ""
         for child in self.children:
             strC += str(child)
+        return strC
 
     def strTag(self):
         return "%s"
