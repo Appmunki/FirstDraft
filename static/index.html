@@ -15,13 +15,16 @@
 			}
 
 			pickFile = function(){
-				filepicker.pick(function(InkBlob){
-					console.log(InkBlob);
-					post(InkBlob, function(data){
-						//console.log(data);
-						window.location.assign(data);
-					});
-				});
+				filepicker.pick({
+							mimetypes:['image/*']
+						},
+						function(InkBlob){
+							console.log(InkBlob);
+							post(InkBlob, function(data){
+								//console.log(data);
+								window.location.assign("/list");
+							});
+						});
 			}
 
 			initFilePick = function(){

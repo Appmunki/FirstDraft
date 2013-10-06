@@ -11,8 +11,7 @@ def insertElem(a):
 def test():
     r.delete('counter')
     for x in range(0, 37):
-        insertElem(x)
-    print printNewest(10)
+        r.delete(x);
 
 def getCounter():
 	counter = r.get('counter')

@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 # init stuff
 r = redis.StrictRedis(host='localhost', port=6379, db=0)
-r.delete('counter')
+# r.delete('counter')
 
 
 # this routs our index, located at /static/index.html
@@ -31,14 +31,16 @@ def api():
 
 # this shows a list of elemnts from a to b
 # where var1 is a and var2 is b
-@app.route('/list/<variable>/<variable>')
-def list(min,max):
-    return print_range(min, max)
+@app.route('/list/<min>/<max>')
+def list_counted(min,max):
+    print min
+    print max
+    return print_range(int(min), int(max))
 
 # this redirects to /list/0/10
 @app.route('/list/')
-def list():
-    return redirect("/list/0/10")
+def list_uncounted():
+    return redirect("/list/"+str(getCounter()-10)+"/"+str(getCounter()))
 
 
 # this gives an html page containing only the image
@@ -104,16 +106,31 @@ def getCounter():
 #  STILL NEEDS A NEXT BUTTON
 def print_range(a, b):
     result = "<html><body>"
-    for x in range (a, b):
+    for x in reversed(range(a, b)):
         temp=get_html_for(r.get(x))
-    result+=temp
+        result+=temp
+    result+="</br>"
+    if a > 0:
+	if a < 10:
+	    result+="<a href=/list/0/10>[previous]</a>"
+    	else:
+            result+="<a href=/list/"+str(a-10)+"/"+str(a)+">[previous]</a>"
+    if b < getCounter():
+	if b < getCounter()-10:
+	    result+="<a href=/list/"+str(b)+"/"+str(b+10)+">[next]</a>"
+	else:
+	    result+="<a href=/list/"+str(getCounter()-10)+"/"+str(getCounter())+">[next]</a>"
+    else:
+	print getCounter()
     result+="</body></html>"
     return result
 
 # gets the default row for an image as HTML
 def get_html_for(a):
     if a:
-        return "<img src = \"/static/content/"+a+"/img.png\" height=\"50px\" width=\"50px\"><div>"+a+"</div><br />"
+        return "<img src = \"/static/content/"+a+"/img.png\" width=\"300px\"><div><a href=/static/content/"+a+"/template.html>[page]</a><a href =/static/content/"+a+"/img.png>[image]</a></div><br />"
+    else:
+	print str(a)+"  was the key to shit"
     return ""
 
 
