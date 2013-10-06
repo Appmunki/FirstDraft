@@ -17,7 +17,7 @@ r = redis.StrictRedis(host='localhost', port=6379, db=0)
 # this routs our index, located at /static/index.html
 @app.route('/')
 def index():
-    return redirect(url_for('static', filename='index.html'))
+    return redirect(url_for('static', filename='demo/index.html'))
 
 # this is the endpoint of where images are sent to
 # any json doc with an element named and of type url will do
