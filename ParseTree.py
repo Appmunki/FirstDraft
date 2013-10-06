@@ -58,32 +58,9 @@ class VisualNode(object):
     def __lt__(self,other):
         return self.boundingBox < other.boundingBox
 
-VisualToHTMLMap =  { 
-    VisualType.DIV: HTMLDivNode,
-    VisualType.TEXT: HTMLTextNode,
-    VisualType.HEADER1: HTMLH1Node,
-    VisualType.HEADER2: HTMLH2Node,
-    VisualType.HEADER3: HTMLH3Node,
-    VisualType.HEADER4: HTMLH4Node,
-    VisualType.HEADER5: HTMLH5Node,
-    VisualType.HEADER6: HTMLH6Node,
-    VisualType.HEADER: HTMLHeaderNode,
-    VisualType.IMAGE: HTMLImageNode,
-    VisualType.VIDEO: HTMLVideoNode,
-    VisualType.AUDIO: HTMLAudioNode,
-    VisualType.FORM: HTMLFormNode,
-    VisualType.LABEL: HTMLLabelNode,
-    VisualType.INPUTTEXT: HTMLInputTextNode,
-    VisualType.INPUTPASSWORD: HTMLInputPasswordNode,
-    VisualType.INPUTCHECKBOX: HTMLInputCheckboxNode,
-    VisualType.INPUTRADIOBUTTON: HTMLInputRadioButtonNode,
-    VisualType.BUTTON: HTMLButtonNode,
-    VisualType.BUTTONSUBMIT: HTMLButtonSubmitNode,
-    VisualType.SELECT: HTMLSelectNode,
-    VisualType.TEXTAREA: HTMLTextAreaNode
-}
 
-class HdTMLNode(object):
+
+class HTMLNode(object):
     def __init__(self,visualNode):
         self.children = []
         
@@ -189,3 +166,28 @@ class HTMLSelectNode(HTMLNode):
 class HTMLTextAreaNode(HTMLNode):
     def strTag(self):
         return "<textarea></textarea>"
+
+VisualToHTMLMap =  { 
+    VisualType.DIV: HTMLDivNode,
+    VisualType.TEXT: HTMLTextNode,
+    VisualType.HEADER1: HTMLH1Node,
+    VisualType.HEADER2: HTMLH2Node,
+    VisualType.HEADER3: HTMLH3Node,
+    VisualType.HEADER4: HTMLH4Node,
+    VisualType.HEADER5: HTMLH5Node,
+    VisualType.HEADER6: HTMLH6Node,
+    VisualType.HEADER: HTMLHeaderNode,
+    VisualType.IMAGE: HTMLImageNode,
+    VisualType.VIDEO: HTMLVideoNode,
+    VisualType.AUDIO: HTMLAudioNode,
+    VisualType.FORM: HTMLFormNode,
+    VisualType.LABEL: HTMLLabelNode,
+    VisualType.INPUTTEXT: HTMLInputTextNode,
+    VisualType.INPUTPASSWORD: HTMLInputPasswordNode,
+    VisualType.INPUTCHECKBOX: HTMLInputCheckboxNode,
+    VisualType.INPUTRADIOBUTTON: HTMLInputRadioButtonNode,
+    VisualType.BUTTON: HTMLButtonNode,
+    VisualType.BUTTONSUBMIT: HTMLButtonSubmitNode,
+    VisualType.SELECT: HTMLSelectNode,
+    VisualType.TEXTAREA: HTMLTextAreaNode
+}
