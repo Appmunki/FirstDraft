@@ -58,19 +58,6 @@ class VisualNode(object):
     def __lt__(self,other):
         return self.boundingBox < other.boundingBox
 
-<<<<<<< HEAD
-VisualToHTMLMap = {
-    "CONTAINER":"div",
-    "TEXT":"p",
-    "IMAGE":"img",
-    "VIDEO":"video",
-    "AUDIO":"audio",
-    "INPUT":"input",
-    "PASSWORD":"input",
-    "HEADER":"h5",
-    "BUTTON":"button",
-    "TEXTINPUT":"textarea",
-=======
 VisualToHTMLMap =  { 
     VisualType.DIV: HTMLDivNode,
     VisualType.TEXT: HTMLTextNode,
@@ -94,7 +81,6 @@ VisualToHTMLMap =  {
     VisualType.BUTTONSUBMIT: HTMLButtonSubmitNode,
     VisualType.SELECT: HTMLSelectNode,
     VisualType.TEXTAREA: HTMLTextAreaNode
->>>>>>> 956e22ddea6b9a1f017fd59f2c1b1d63284440b2
 }
 
 class HdTMLNode(object):
@@ -166,11 +152,7 @@ class HTMLAudioNode(HTMLNode):
 
 class HTMLFormNode(HTMLNode):
     def strTag(self):
-<<<<<<< HEAD
-        src = "http://media.w3.org/2010/07/bunny/04-Death_Becomes_Fur.oga"
-        return "<audio src='" + src  + "' controls>%s</audio>"
-=======
-        return "<form>%s</form>"
+       return "<form>%s</form>"
 
 class HTMLLabelNode(HTMLNode):
     def strTag(self):
@@ -207,4 +189,3 @@ class HTMLSelectNode(HTMLNode):
 class HTMLTextAreaNode(HTMLNode):
     def strTag(self):
         return "<textarea></textarea>"
->>>>>>> 956e22ddea6b9a1f017fd59f2c1b1d63284440b2
