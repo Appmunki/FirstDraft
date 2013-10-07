@@ -6,7 +6,7 @@ import os
 import redis
 import sys
 import FirstDraft
-sys.appendPath.path(".")
+sys.path.append(".")
 #import firstdraft
 
 # flash stuff

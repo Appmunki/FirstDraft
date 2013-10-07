@@ -12,8 +12,8 @@ class ContourFinder:
         pass
     @classmethod
     def findContours(self,edg):
-        plt.imshow(edg)
-        plt.show()
+        #plt.imshow(edg)
+        #plt.show()
         temp = []
         cont = []
         contours, hir = cv2.findContours(edg, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
@@ -35,7 +35,8 @@ class ContourFinder:
                     x2,y2,w2,h2 = cv2.boundingRect(c2)
                     if(abs(x-x2)<7 and abs(y2-y)<7 and abs(h-h2)<7 and abs(w-w2)<7):
                         Z[ri2] = (None,z2[1][3])
-                #Z[i]=(None,z[1][3])         
+            else:
+                Z[i]=(None,z[1][3])         
         trueHeir = {}
         if 1:
             for i,z in enumerate(Z):
@@ -110,9 +111,11 @@ class ContourFinder:
             # apply the mask
             masked_image = cv2.bitwise_and(cutoutimg, mask)
             x,y,w,h = cv2.boundingRect(cnt)
-            crop = masked_image[y:y+h,x:x+w]
+            crop = masked_image[y+7:y+30,max(x+w-35,0):x+w-7]
+            #crop = masked_image[y:y+h,x:x+w]
             croppedImages.append(crop)
-        return contours, hir, croppedImages
+        del hir[0]
+        return contours[1:], hir, croppedImages[1:]
    
 
 class ContourNode:
@@ -126,8 +129,8 @@ class ContourNode:
 
 def dictParse(contourArray, croppedImages, indicesDict, index):
     print len(contourArray)
-    thisnode = ContourNode(contourArray[index],croppedImages[index])
+    thisnode = ContourNode(contourArray[index-1],croppedImages[index-1])
     if(indicesDict.has_key(index)):
         for childNode in indicesDict[index]:
-                thisnode.addChild(dictParse(contourArray, croppedImages, indicesDict, childNode))
+            thisnode.addChild(dictParse(contourArray, croppedImages, indicesDict, childNode))
     return thisnode

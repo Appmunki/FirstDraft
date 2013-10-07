@@ -4,6 +4,11 @@ import HTMLParser
 import matplotlib.pyplot as plt 
 import tesseract
 import cv2
+import cv2.cv as cv
+import Image
+import pyocr
+import pyocr.builders
+import pyocr.cuneiform
 
 class Enum(set):
     def __getattr__(self, name):
@@ -103,22 +108,41 @@ class VisualNode(object):
         return self.boundingBox < other.boundingBox
 
 def ContourToVisualTree(contourRoot):
-		image_orig = cv2.cvtColor(contourRoot.img, cv2.COLOR_BGR2GRAY)
-		#image = cv2.cv.LoadImage("../testimages/testimage4-2.png", cv2.cv.CV_LOAD_IMAGE_GRAYSCALE)
-		api = tesseract.TessBaseAPI()
-		api.Init(".","eng",tesseract.OEM_DEFAULT)
-		api.SetPageSegMode(tesseract.PSM_SINGLE_LINE)
-		tesseract.SetCvImage(image_orig, api)
-		extracted = api.GetUTF8Text()
-		guess_char = extracted[0].upper()
-		if guess_char not in ContourNodeToVisualType:
-				guess_char = 'C'
-		visualType = ContourNodeToVisualType[guess_char]
-		bbox = RelativeBoundingBox(*contourRoot.bbox)
-		thisnode = VisualNode(None, visualType, bbox)
-		for cnode in contourRoot.children:
-			thisnode.addChild(ContourToVisualTree(cnode))
-		return thisnode
+    gray = cv2.cvtColor(contourRoot.img, cv2.COLOR_BGR2GRAY)
+    #image_orig = contourRoot.img
+    kernel = cv2.getStructuringElement(cv2.MORPH_CROSS,(3,3))
+    gray=cv2.dilate(gray,kernel)
+    gray=cv2.erode(gray,kernel)
+    image_orig = cv2.cvtColor(gray, cv2.COLOR_GRAY2BGR)
+    h, w, c = image_orig.shape
+    iplimage = cv.CreateImageHeader((w,h), cv.IPL_DEPTH_8U, c)
+    cv.SetData(iplimage, image_orig.tostring(), image_orig.dtype.itemsize*c*w)
+    #image_orig = cv2.threshold(image_orig, 128, 255, cv2.THRESH_BINARY)
+    #pi = Image.fromarray(image_orig)
+    plt.imshow(image_orig)
+    plt.show()
+    #image = cv2.cv.LoadImage("../testimages/testimage4-2.png", cv2.cv.CV_LOAD_IMAGE_GRAYSCALE)
+    #extracted = pyocr.cuneiform.image_to_string(pi, lang='eng', builder=pyocr.builders.TextBuilder())
+    api = tesseract.TessBaseAPI()
+    api.Init(".","eng",tesseract.OEM_DEFAULT)
+    api.SetVariable("tessedit_char_whitelist",''.join(ContourNodeToVisualType.keys()))
+    api.SetPageSegMode(tesseract.PSM_SINGLE_LINE)
+    tesseract.SetCvImage(iplimage, api)
+    print "Getting text"
+    extracted = api.GetUTF8Text()
+    print extracted
+    try:
+        guess_char = extracted[0].upper()
+    except IndexError:
+        guess_char = 'C'
+    if guess_char not in ContourNodeToVisualType:
+        guess_char = 'C'
+    visualType = ContourNodeToVisualType[guess_char]
+    bbox = RelativeBoundingBox(*contourRoot.bbox)
+    thisnode = VisualNode(None, visualType, bbox)
+    for cnode in contourRoot.children:
+        thisnode.addNewChild(ContourToVisualTree(cnode))
+    return thisnode
 
 
 
@@ -194,7 +218,7 @@ class HTMLHeaderNode(HTMLNode):
 
 class HTMLImageNode(HTMLNode):
     def strTag(self):
-        src = "http://lorempixel.com/%s/%s/cats" % (self.visualNode.boundingBox.width, self.visualNode.boundingBox.height)
+        src = "http://lorempixel.com/%s/%s/cats" % (self.boundingBox.width, self.boundingBox.height)
         return "<img src='" + src  + "' %s>%s</img>"
 
 class HTMLVideoNode(HTMLNode):
@@ -249,7 +273,7 @@ class HTMLTextAreaNode(HTMLNode):
 
 class HTMLImageDivNode(HTMLNode):
     def strTag(self):
-        src = "http://lorempixel.com/%s/%s/city" % (self.visualNode.boundingBox.width, self.visualNode.boundingBox.height)
+        src = "http://lorempixel.com/%s/%s/city" % (self.boundingBox.width, self.boundingBox.height)
         return "<div style='background-image: url(\"" + src  + "\")' %s>%s</img>"
 
 class HTMLListNode(HTMLNode):
